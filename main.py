@@ -26,6 +26,11 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+
+    if message.content == "$ping":
+        print(message)
+        await message.channel.send("pong!")
+
     if not channel_is_allowed(message.channel.id):
         return
 
