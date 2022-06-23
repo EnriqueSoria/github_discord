@@ -5,8 +5,8 @@ from github import Github
 from github_repo import get_pending_review_pull_requests, pull_request_to_str
 from settings import ALLOWED_CHANNEL_IDS, DISCORD_TOKEN, GITHUB_REPO_NAME, GITHUB_TOKEN
 
-client = discord.Client()
-bot = commands.Bot(command_prefix="$")
+
+client = commands.Bot(command_prefix="/", intents=discord.Intents.default())
 
 
 def channel_is_allowed(channel_id) -> bool:
@@ -14,29 +14,6 @@ def channel_is_allowed(channel_id) -> bool:
         return True
 
     return str(channel_id) in ALLOWED_CHANNEL_IDS
-
-
-@bot.event
-async def on_ready():
-    print("Logged in as")
-    print(bot.user.name)
-    print(bot.user.id)
-    print("------")
-
-
-@client.event
-async def on_message(message):
-
-    if message.content == "$ping":
-        print(message)
-        await message.channel.send("pong!")
-
-    if not channel_is_allowed(message.channel.id):
-        return
-
-    if message.content == "$pending_reviews":
-        await message.delete()
-        await message.channel.send(get_pending_reviews_message(repo))
 
 
 def get_pending_reviews_message(repo):
@@ -52,13 +29,24 @@ def get_pending_reviews_message(repo):
     return f"{separator}\n**PRs with code review pending:**\n{separator}\n\n{msg}"
 
 
-@bot.command()
+@client.command(name="pending_reviews", help="hey")
 async def pending_reviews(ctx):
-    await ctx.send(get_pending_reviews_message(repo))
+    if not channel_is_allowed(ctx.channel.id):
+        await ctx.channel.send(
+            f"Command not allowed in this channel (`id={ctx.channel.id}`)"
+        )
+    else:
+        await ctx.channel.send(get_pending_reviews_message(repo))
+
+
+@client.command()
+async def ping(ctx):
+    await ctx.channel.send("pong!")
 
 
 if __name__ == "__main__":
     # Github
+    print(f"Configured for repo: {GITHUB_REPO_NAME}")
     github = Github(GITHUB_TOKEN)
     repo = github.get_repo(GITHUB_REPO_NAME)
 
