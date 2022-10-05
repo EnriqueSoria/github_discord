@@ -1,8 +1,9 @@
-from typing import List
+from typing import List, Dict
 
 import discord
 from discord import option
 from github import Github
+from github.Repository import Repository
 
 from github_repo import get_pending_review_pull_requests, pull_request_to_str
 from settings import (
@@ -10,6 +11,7 @@ from settings import (
     DISCORD_TOKEN,
     GITHUB_TOKEN,
     ALLOWED_REPO_NAMES,
+    ALLOWED_ORGANIZATIONS,
 )
 
 bot = discord.Bot()
@@ -63,18 +65,28 @@ def main():
     bot.run(DISCORD_TOKEN)
 
 
-if __name__ == "__main__":
-    # Github
-    github = Github(GITHUB_TOKEN)
-
-    repos = ALLOWED_REPO_NAMES
-    if "*" in ALLOWED_REPO_NAMES:
-        repos = {repo.name: repo for repo in github.get_repos()}
+def get_repositories(github: Github) -> Dict[str, Repository]:
+    if ALLOWED_ORGANIZATIONS and "*" in ALLOWED_REPO_NAMES:
+        repos = {}
+        for organization in ALLOWED_ORGANIZATIONS:
+            repos.update(
+                {
+                    f"{organization}/{repo.name}": repo
+                    for repo in github.get_organization(organization).get_repos()
+                }
+            )
     else:
         repos = {
             repo_name: github.get_repo(repo_name) for repo_name in ALLOWED_REPO_NAMES
         }
 
+    return repos
+
+
+if __name__ == "__main__":
+    # Github
+    github = Github(GITHUB_TOKEN)
+    repos = get_repositories(github)
     print(f"Configured for repos: {','.join(repos.keys())}")
 
     # Discord
