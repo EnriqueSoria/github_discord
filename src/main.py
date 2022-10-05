@@ -39,7 +39,7 @@ async def get_repos(ctx: discord.AutocompleteContext) -> List[str]:
     """Returns a list of repos that begin with the characters entered so far."""
     if not channel_is_allowed(ctx.interaction.channel_id):
         return []
-    return [repo for repo in repos.keys() if repo.startswith(ctx.value.lower())]
+    return [repo for repo in repos.keys() if ctx.value.lower() in repo.lower()]
 
 
 @bot.slash_command(name="pending_reviews")
