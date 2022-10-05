@@ -18,10 +18,10 @@ bot = discord.Bot()
 
 
 def channel_is_allowed(channel_id) -> bool:
-    if "*" in ALLOWED_CHANNEL_IDS:
-        return True
+    if ALLOWED_CHANNEL_IDS:
+        return str(channel_id) in ALLOWED_CHANNEL_IDS
 
-    return str(channel_id) in ALLOWED_CHANNEL_IDS
+    return True
 
 
 def get_pending_reviews_message(repo):
@@ -66,7 +66,7 @@ def main():
 
 
 def get_repositories(github: Github) -> Dict[str, Repository]:
-    if ALLOWED_ORGANIZATIONS and "*" in ALLOWED_REPO_NAMES:
+    if ALLOWED_ORGANIZATIONS:
         repos = {}
         for organization in ALLOWED_ORGANIZATIONS:
             repos.update(
