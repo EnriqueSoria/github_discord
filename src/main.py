@@ -29,12 +29,17 @@ def get_pending_reviews_message(repo):
     if not pending_pull_requests:
         return None
 
-    msg = "\n-----\n".join(
+    msg = "\n\n-----\n\n".join(
         map(pull_request_to_str, get_pending_review_pull_requests(repo))
     )
 
-    separator = "=" * 23
-    return f"{separator}\n**{repo.name}:**\n{separator}\n\n{msg}"
+    title = f" **{repo.name}** ".center(40, "-")
+    return "\n".join([
+        "",
+        title,
+        "",
+        msg,
+    ])
 
 
 async def get_repos(ctx: discord.AutocompleteContext) -> List[str]:

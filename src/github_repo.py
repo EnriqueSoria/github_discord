@@ -40,7 +40,7 @@ def pull_request_to_str(pull_request: PullRequest) -> str:
     labels = labels_to_str(get_label_names(pull_request))
     return "\n".join(
         [
-            f"💬 {pull_request.title}",
+            f"**{pull_request.title}**",
             f"🏷 {labels}",
             f"🔗 {pull_request.html_url}",
         ]
