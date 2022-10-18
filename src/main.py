@@ -58,6 +58,7 @@ async def pending_reviews(ctx, repo: str):
         )
         return
 
+    await ctx.defer()
     await ctx.respond(get_pending_reviews_message(repos[repo]))
 
 
