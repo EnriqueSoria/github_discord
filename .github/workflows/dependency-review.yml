@@ -1,0 +1,13 @@
+name: 'Dependency Review'
+on: [pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR annotator with ruff
+        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.0
+
