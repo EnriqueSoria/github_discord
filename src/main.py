@@ -90,6 +90,9 @@ def get_repositories(github: Github) -> Dict[str, Repository]:
 
 
 if __name__ == "__main__":
+    a_veeeeeeeeeery_long_variable_name = "such long"
+    another_veeeeeeeeeery_long_variable_name = a_veeeeeeeeeery_long_variable_name + ", even more than 100 lines!"
+
     # Github
     github = Github(GITHUB_TOKEN)
     repos = get_repositories(github)
