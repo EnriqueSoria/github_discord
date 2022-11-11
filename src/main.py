@@ -5,7 +5,7 @@ from discord import option
 from github import Github
 from github.Repository import Repository
 
-from github_repo import get_pending_review_pull_requests, pull_request_to_str
+from github_repo import get_pending_review_pull_requests, pull_request_to_str. # 737388383838383383838382838 iwowowooowowowo jdjdjdkkdkddkdkkddkkdkdd jjdjdjdjd
 from settings import (
     ALLOWED_CHANNEL_IDS,
     DISCORD_TOKEN,
