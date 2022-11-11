@@ -11,6 +11,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so that typilus can access it.
       - uses: actions/checkout@v2
       - name: PR annotator with ruff
-        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.2
+        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
