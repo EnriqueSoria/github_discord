@@ -5,9 +5,9 @@ jobs:
   dependency-review:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so that typilus can access it.
+      # Checks-out your repository under $GITHUB_WORKSPACE, so that annotate_pr_with_ruff can access it.
       - uses: actions/checkout@v2
       - name: PR annotator with ruff
-        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.4
+        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
