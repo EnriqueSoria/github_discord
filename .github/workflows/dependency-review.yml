@@ -16,6 +16,6 @@ jobs:
         run: pip install requests==2.28.1
         shell: bash
       - name: PR annotator with ruff
-        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.15
+        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.16
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
