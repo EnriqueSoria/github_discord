@@ -12,6 +12,9 @@ jobs:
           python-version: '3.10' 
       - name: Install ruff from PyPI
         uses: install-pinned/ruff@66c987de12929f701b73e83c82edc36050ae55a0
+      - name: Install requests library
+        run: pip install requests==2.28.1
+        shell: bash
       - name: PR annotator with ruff
         uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.15
         env:
