@@ -13,6 +13,6 @@ jobs:
       - name: Install ruff from PyPI
         uses: install-pinned/ruff@66c987de12929f701b73e83c82edc36050ae55a0
       - name: PR annotator with ruff
-        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.11
+        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.12
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
