@@ -10,14 +10,10 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10' 
-      - name: Install ruff from PyPI
-        uses: install-pinned/ruff@66c987de12929f701b73e83c82edc36050ae55a0
       - name: Install requests library
-        run: pip install requests==2.28.1
+        run: pip install ruff
         shell: bash
       - name: annotate_pr_with_ruff
-        uses: EnriqueSoria/annotate_pr_with_ruff@c226a0b09f7e8ea7f148f29c129f89399b37f03d
+        uses: EnriqueSoria/annotate_pr_with_ruff@4910dfd4981db6968122fca6abcb9666f9b8180d
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Print changelog
-        run: echo "${{ steps.annotate_pr_with_ruff.outputs.stdout }}"
