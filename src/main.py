@@ -5,7 +5,7 @@ from discord import option
 from github import Github
 from github.Repository import Repository
 
-from github_repo import get_pending_review_pull_requests, pull_request_to_str.
+from github_repo import get_pending_review_pull_requests, pull_request_to_str
 from settings import (
     ALLOWED_CHANNEL_IDS,
     DISCORD_TOKEN,
@@ -17,6 +17,8 @@ from settings import (
 
 def foo(x = {}):
     return x
+
+from itertools import *
 
 bot = discord.Bot()
 
