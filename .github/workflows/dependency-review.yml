@@ -8,6 +8,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so that annotate_pr_with_ruff can access it.
       - uses: actions/checkout@v2
       - name: PR annotator with ruff
-        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.8
+        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
