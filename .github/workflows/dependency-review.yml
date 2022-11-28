@@ -19,3 +19,8 @@ jobs:
         uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.17
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: test
+        run: echo "test!" && echo "test!" >> $GITHUB_STEP_SUMMARY
+        shell: bash
+      - name: test2
+        run: cat $GITHUB_STATE && cat $GITHUB_STATE >> $GITHUB_STEP_SUMMARY
