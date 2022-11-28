@@ -20,7 +20,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: test
-        run: echo "${{ steps.annotate_pr_with_ruff.num_errors }}" && echo "${{ steps.annotate_pr_with_ruff.num_errors }}" >> $GITHUB_STEP_SUMMARY
+        run: |
+          echo "::set-output name=num_errors::3" >> $GITHUB_STEP_SUMMARY
+          echo "::error file=src/main.py,line=8::That was an error" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.annotate_pr_with_ruff.num_errors }}" >> $GITHUB_STEP_SUMMARY
         shell: bash
       - name: test2
         run: cat $GITHUB_STATE && cat $GITHUB_STATE >> $GITHUB_STEP_SUMMARY
