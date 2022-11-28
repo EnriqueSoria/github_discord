@@ -14,6 +14,6 @@ jobs:
         run: pip install ruff
         shell: bash
       - name: annotate_pr_with_ruff
-        uses: EnriqueSoria/annotate_pr_with_ruff@e8bced166d1cc13709169657c6122f5c8062bd2d
+        uses: EnriqueSoria/annotate_pr_with_ruff@663752792de8d654f804de9b22eb210d20491812
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
