@@ -20,4 +20,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Print changelog
-        run: echo "${{ steps.annotate_pr_with_ruff.outputs.errors }}"
+        run: echo ${{ steps.annotate_pr_with_ruff.outputs.errors }}
