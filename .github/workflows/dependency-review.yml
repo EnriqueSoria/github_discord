@@ -16,15 +16,8 @@ jobs:
         run: pip install requests==2.28.1
         shell: bash
       - name: annotate_pr_with_ruff
-        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.17
+        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.18
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: test
-        run: |
-          echo "::set-output name=num_errors::3"
-          echo "::error file=src/main.py,line=8::That was an error"
-          echo "::error file=src/main.py,line=8,col=1::That was an error on col 1"
-          echo "${{ steps.annotate_pr_with_ruff.num_errors }}" >> $GITHUB_STEP_SUMMARY
-        shell: bash
-      - name: test2
-        run: cat $GITHUB_STATE && cat $GITHUB_STATE >> $GITHUB_STEP_SUMMARY
+      - name: Print changelog
+        run: echo "${{ steps.annotate_pr_with_ruff.outputs.errors }}"
