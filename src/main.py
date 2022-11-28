@@ -5,14 +5,18 @@ from discord import option
 from github import Github
 from github.Repository import Repository
 
-from github_repo import get_pending_review_pull_requests, pull_request_to_str. # 737388383838383383838382838 iwowowooowowowo jdjdjdkkdkddkdkkddkkdkdd jjdjdjdjd
+from github_repo import get_pending_review_pull_requests, pull_request_to_str.
 from settings import (
     ALLOWED_CHANNEL_IDS,
     DISCORD_TOKEN,
     GITHUB_TOKEN,
     ALLOWED_REPO_NAMES,
     ALLOWED_ORGANIZATIONS,
+    get_env_list,
 )
+
+def foo(x = {}):
+    return x
 
 bot = discord.Bot()
 
