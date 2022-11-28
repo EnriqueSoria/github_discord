@@ -16,7 +16,7 @@ jobs:
         run: pip install requests==2.28.1
         shell: bash
       - name: annotate_pr_with_ruff
-        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.18
+        uses: EnriqueSoria/annotate_pr_with_ruff@v0.1.19
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Print changelog
