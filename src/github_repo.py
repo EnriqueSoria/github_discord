@@ -4,6 +4,8 @@ from typing import Iterable, List
 from github.PullRequest import PullRequest
 from github.Repository import Repository
 
+import settings
+
 
 def review_is_pending(pull_request: PullRequest) -> bool:
     review_states = map(attrgetter("state"), pull_request.get_reviews())
@@ -19,7 +21,7 @@ def get_label_names(pull_request: PullRequest) -> List[str]:
 
 
 def get_pending_review_pull_requests(repo: Repository) -> Iterable[PullRequest]:
-    pull_requests = repo.get_pulls(state="open", base="staging")
+    pull_requests = repo.get_pulls(state="open", base=settings.BASE_BRANCH)
 
     pr_filters = (
         pull_request_is_ready,
