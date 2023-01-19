@@ -1,6 +1,8 @@
+from datetime import datetime
 from operator import attrgetter
 from typing import Iterable, List
 
+import humanize
 from github.PullRequest import PullRequest
 from github.Repository import Repository
 
@@ -40,10 +42,13 @@ def labels_to_str(labels: List[str]) -> str:
 
 def pull_request_to_str(pull_request: PullRequest) -> str:
     labels = labels_to_str(get_label_names(pull_request))
+    humanize.i18n.activate(settings.LOCALE)
+    time_ago = humanize.naturaltime(datetime.now()-pull_request.created_at)
     return "\n".join(
         [
             f"**{pull_request.title}**",
             f"🏷 {labels}",
             f"🔗 {pull_request.html_url}",
+            f"⏲ {time_ago}",
         ]
     )

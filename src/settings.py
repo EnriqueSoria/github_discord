@@ -6,6 +6,8 @@ from utils import get_env_list
 
 load_dotenv()
 
+LOCALE = os.environ.get("LOCALE", "es_ES")
+
 DISCORD_TOKEN = os.environ["DISCORD_TOKEN"]
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
 ALLOWED_REPO_NAMES = get_env_list("ALLOWED_REPO_NAMES", None)
