@@ -1,3 +1,4 @@
+import logging
 from typing import List, Dict
 from typing import Tuple
 from urllib.parse import urlparse
@@ -15,6 +16,8 @@ from settings import (
     ALLOWED_REPO_NAMES,
     ALLOWED_ORGANIZATIONS,
 )
+
+logger = logging.getLogger(__name__)
 
 bot = discord.Bot()
 
@@ -62,8 +65,23 @@ async def pending_reviews(ctx, repo: str):
         )
         return
 
+    try:
+        repository = repos[repo]
+    except KeyError:
+        await ctx.respond(f"❌ Repository '{repo}' not found")
+        return
+
     await ctx.defer()
-    await ctx.respond(get_pending_reviews_message(repos[repo]))
+    await ctx.respond(get_pending_reviews_message(repository))
+
+
+@bot.event
+async def on_application_command_error(
+    ctx: discord.ApplicationContext,
+    error: discord.DiscordException,
+):
+    logger.exception("Something went wrong")
+    await ctx.respond("❌ Something went wrong")
 
 
 def parse_pull_request_url(url: str) -> Tuple[str, int]:
@@ -81,9 +99,15 @@ async def pending_reviews(ctx, url: str):
         )
         return
 
+    repo_name, pr_number = parse_pull_request_url(url)
+    try:
+        repository = repos[repo_name]
+    except KeyError:
+        await ctx.respond(f"❌ Repository '{repo_name}' not found")
+        return
+
     await ctx.defer()
-    repo, pr_number = parse_pull_request_url(url)
-    await ctx.respond(pull_request_to_str(repos[repo].get_pull(pr_number)))
+    await ctx.respond(pull_request_to_str(repository.get_pull(pr_number)))
 
 
 @bot.command()
