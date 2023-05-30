@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "github_discord"
-version = "0.1.5
+version = "0.1.5"
 description = ""
 authors = ["EnriqueSoria <me@enriquesoria.com>"]
 license = "MIT"
