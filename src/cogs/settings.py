@@ -1,14 +1,21 @@
 import os
-
+from typing import Any, List
 from dotenv import load_dotenv
 
-from utils import get_env_list
+
+def get_env_list(name: str, default: Any, split_by: str = ",") -> List[str]:
+    try:
+        value = os.environ[name]
+        if value:
+            return value.split(split_by)
+    except KeyError:
+        return default
+
 
 load_dotenv()
 
 LOCALE = os.environ.get("LOCALE", "es_ES")
 
-DISCORD_TOKEN = os.environ["DISCORD_TOKEN"]
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
 ALLOWED_REPO_NAMES = get_env_list("ALLOWED_REPO_NAMES", None)
 ALLOWED_ORGANIZATIONS = get_env_list("ALLOWED_ORGANIZATIONS", None)
