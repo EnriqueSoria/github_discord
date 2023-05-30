@@ -1,14 +1,12 @@
 [tool.poetry]
-name = "githubdiscordbot"
-version = "0.1.4"
+name = "github_discord"
+version = "0.1.5
 description = ""
 authors = ["EnriqueSoria <me@enriquesoria.com>"]
 license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/EnriqueSoria/GithubDiscordBot"
 repository = "https://github.com/EnriqueSoria/GithubDiscordBot"
-
-packages = [{include = "src/github_discord"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
