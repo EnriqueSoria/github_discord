@@ -2,8 +2,9 @@ import logging
 import os
 
 import discord
-from src.cogs.pull_requests import PullRequests
-from src.domain.githubb import RepositoriesRepository
+
+from src.github_discord.cogs.pull_requests import PullRequests
+from src.github_discord.domain.githubb import RepositoriesRepository
 
 logger = logging.getLogger(__name__)
 

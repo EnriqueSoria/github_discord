@@ -2,7 +2,13 @@
 name = "githubdiscordbot"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["EnriqueSoria <me@enriquesoria.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/EnriqueSoria/GithubDiscordBot"
+repository = "https://github.com/EnriqueSoria/GithubDiscordBot"
+
+packages = [{include = "src/"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"

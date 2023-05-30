@@ -7,10 +7,10 @@ from typing import Set
 import github
 import humanize
 
-from src.cogs import settings
-from src.cogs.settings import ALLOWED_ORGANIZATIONS
-from src.cogs.settings import ALLOWED_REPO_NAMES
-from src.cogs.settings import GITHUB_TOKEN
+from src.github_discord.cogs import settings
+from src.github_discord.cogs.settings import ALLOWED_ORGANIZATIONS
+from src.github_discord.cogs.settings import ALLOWED_REPO_NAMES
+from src.github_discord.cogs.settings import GITHUB_TOKEN
 
 
 @dataclass
