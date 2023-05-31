@@ -5,12 +5,12 @@ from discord import option
 from discord.ext import commands
 
 
-from src.github_discord.cogs.utils import channel_is_allowed
-from src.github_discord.cogs.utils import parse_pull_request_url
-from src.github_discord.domain.githubb import PendingReviewFormatter
-from src.github_discord.domain.githubb import PullRequestFormatter
-from src.github_discord.domain.githubb import PullRequestRepository
-from src.github_discord.domain.githubb import RepositoriesRepository
+from github_discord.cogs.utils import channel_is_allowed
+from github_discord.cogs.utils import parse_pull_request_url
+from github_discord.domain.githubb import PendingReviewFormatter
+from github_discord.domain.githubb import PullRequestFormatter
+from github_discord.domain.githubb import PullRequestRepository
+from github_discord.domain.githubb import RepositoriesRepository
 
 
 class PullRequests(commands.Cog):

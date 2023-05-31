@@ -1,7 +1,7 @@
 from typing import Tuple
 from urllib.parse import urlparse
 
-from src.github_discord.cogs.settings import ALLOWED_CHANNEL_IDS
+from github_discord.cogs.settings import ALLOWED_CHANNEL_IDS
 
 
 def channel_is_allowed(channel_id) -> bool:
