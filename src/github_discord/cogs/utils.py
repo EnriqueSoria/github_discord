@@ -11,7 +11,7 @@ def channel_is_allowed(channel_id) -> bool:
     return True
 
 
-def parse_pull_request_url(url: str) -> Tuple[str, int]:
+def parse_pull_request_url(url: str):
     parsed_url = urlparse(url)
-    repo_name, _, pr_number = parsed_url.path.removeprefix("/").rsplit("/", maxsplit=2)
-    return repo_name, int(pr_number)
+    _, user, repo_name, _, pr_number, *_ = parsed_url.path.split("/")
+    return f"{user}/{repo_name}", int(pr_number)
