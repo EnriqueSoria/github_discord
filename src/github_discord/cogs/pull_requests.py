@@ -3,13 +3,11 @@ from typing import List
 import discord
 from discord import option
 from discord.ext import commands
-
-
 from github_discord.cogs.utils import channel_is_allowed
 from github_discord.cogs.utils import parse_pull_request_url
-from github_discord.domain.githubb import PendingReviewFormatter
 from github_discord.domain.githubb import PullRequestFormatter
 from github_discord.domain.githubb import PullRequestRepository
+from github_discord.domain.githubb import PendingReviewFormatter
 from github_discord.domain.githubb import RepositoriesRepository
 
 
@@ -45,7 +43,8 @@ class PullRequests(commands.Cog):
 
     @discord.slash_command(name="pull_request")
     @option("url", description="Pick a PR by number or url")
-    async def pending_reviews(self, ctx, url: str):
+    @option("comment", description="Add an additional comment")
+    async def pending_reviews(self, ctx, url: str, comment: str = ""):
         if not channel_is_allowed(ctx.channel.id):
             await ctx.respond(
                 f"Command not allowed in this channel (`id={ctx.channel.id}`)"
@@ -62,4 +61,4 @@ class PullRequests(commands.Cog):
         await ctx.defer()
 
         pull_request = PullRequestRepository(repository).get(pr_number)
-        await ctx.respond(PullRequestFormatter()(pull_request))
+        await ctx.respond(PullRequestFormatter()(pull_request, comment=comment))

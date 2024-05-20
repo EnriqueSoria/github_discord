@@ -1,16 +1,15 @@
 import datetime
-from dataclasses import dataclass
+from typing import Set
 from typing import Dict
 from typing import List
-from typing import Set
+from dataclasses import dataclass
 
 import github
 import humanize
-
 from github_discord.cogs import settings
-from github_discord.cogs.settings import ALLOWED_ORGANIZATIONS
-from github_discord.cogs.settings import ALLOWED_REPO_NAMES
 from github_discord.cogs.settings import GITHUB_TOKEN
+from github_discord.cogs.settings import ALLOWED_REPO_NAMES
+from github_discord.cogs.settings import ALLOWED_ORGANIZATIONS
 
 
 @dataclass
@@ -83,7 +82,7 @@ class PullRequestRepository:
 
 
 class PullRequestFormatter:
-    def __call__(self, pull_request: PullRequest) -> str:
+    def __call__(self, pull_request: PullRequest, comment: str | None = None) -> str:
         labels = ", ".join([f"`{label}`" for label in pull_request.labels])
         humanize.i18n.activate(settings.LOCALE)
         time_ago = humanize.naturaltime(
@@ -96,6 +95,7 @@ class PullRequestFormatter:
                 f"🔗 {pull_request.url}",
                 f"⏲ {time_ago}",
             ]
+            + ([f"💬 {comment}"] if comment else [])
         )
 
 
