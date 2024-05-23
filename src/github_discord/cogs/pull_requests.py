@@ -41,7 +41,7 @@ class PullRequests(commands.Cog):
         pull_requests = PullRequestRepository(repository).list()
         await ctx.respond(PendingReviewFormatter()(pull_requests.items()))
 
-    @discord.slash_command(name="pull_request")
+    @discord.slash_command(name="pull_request", allowed_mentions=True)
     @option("url", description="Pick a PR by number or url")
     @option("comment", description="Add an additional comment")
     async def pending_reviews(self, ctx, url: str, comment: str = ""):
