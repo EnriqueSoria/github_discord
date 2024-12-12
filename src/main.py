@@ -1,13 +1,17 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 import logging
 import os
-
 import discord
 
-from src.github_discord.cogs.pull_requests import PullRequests
-from src.github_discord.domain.githubb import RepositoriesRepository
+from github_discord.cogs.pull_requests import PullRequests
+from github_discord.domain.githubb import RepositoriesRepository
+
 
 logger = logging.getLogger(__name__)
-
 bot = discord.Bot()
 
 
@@ -16,13 +20,8 @@ async def on_application_command_error(
     ctx: discord.ApplicationContext,
     error: discord.DiscordException,
 ):
-    logger.exception(f"Something went wrong {error}")
+    logger.error(f"Something went wrong {error}", exc_info=error)
     await ctx.respond("❌ Something went wrong")
-
-
-@bot.command()
-async def ping(ctx):
-    await ctx.channel.send("pong!")
 
 
 def main():

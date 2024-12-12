@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: debug-statements
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-merge-conflict
+
+  - repo: https://github.com/python-poetry/poetry
+    rev: '1.2.2'
+    hooks:
+      - id: poetry-check
+        files: "pyproject.toml"
+      - id: poetry-lock
+        args: ["--check", "--no-update"]
+        files: "pyproject.toml"
+      - id: poetry-export
+        args: ["--format", "requirements.txt", "--output", "requirements.txt", "--without-hashes"]
+        files: "poetry.lock"
