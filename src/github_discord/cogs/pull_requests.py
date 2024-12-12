@@ -5,7 +5,6 @@ from discord import option
 from discord.ext import commands
 from github_discord.cogs.utils import channel_is_allowed
 from github_discord.cogs.utils import parse_pull_request_url
-from github_discord.domain.githubb import PullRequestFormatter
 from github_discord.domain.githubb import PullRequestRepository
 from github_discord.domain.githubb import PendingReviewFormatter
 from github_discord.domain.githubb import RepositoriesRepository
@@ -41,8 +40,8 @@ class PullRequests(commands.Cog):
         pull_requests = PullRequestRepository(repository).list()
         await ctx.respond(PendingReviewFormatter()(pull_requests.items()))
 
-    @discord.slash_command(name="pull_request")
-    @option("url", description="Pick a PR by number or url")
+    @discord.slash_command(name="pull_request", allowed_mentions=True)
+    @option("url", description="Add a pull request URL")
     @option("comment", description="Add an additional comment")
     async def pending_reviews(self, ctx, url: str, comment: str = ""):
         if not channel_is_allowed(ctx.channel.id):
@@ -61,4 +60,25 @@ class PullRequests(commands.Cog):
         await ctx.defer()
 
         pull_request = PullRequestRepository(repository).get(pr_number)
-        await ctx.respond(PullRequestFormatter()(pull_request, comment=comment))
+
+        embed = discord.Embed(
+            description=(pull_request.description or "") + "\n\n",
+            color=discord.Colour.blurple(),
+            timestamp=pull_request.created_at,
+            url=pull_request.url,
+        )
+
+        embed.add_field(name="🔗 URL", value=pull_request.url, inline=False)
+        if pull_request.labels:
+            embed.add_field(
+                name="🏷 Labels",
+                value=", ".join([f"`{label}`" for label in pull_request.labels]),
+                inline=False,
+            )
+
+        embed.set_author(
+            name=f"#{pull_request.number} on {pull_request.repository.name}",
+            url=pull_request.url,
+        )
+
+        await ctx.respond(comment, embed=embed)

@@ -79,38 +79,3 @@ class PullRequestRepository:
 
     def get(self, number) -> PullRequest:
         return self.list()[number]
-
-
-class PullRequestFormatter:
-    def __call__(self, pull_request: PullRequest, comment: str | None = None) -> str:
-        labels = ", ".join([f"`{label}`" for label in pull_request.labels])
-        humanize.i18n.activate(settings.LOCALE)
-        time_ago = humanize.naturaltime(
-            datetime.datetime.now() - pull_request.created_at
-        )
-        return "\n".join(
-            [
-                f"**{pull_request.title}**",
-                f"🏷 {labels}",
-                f"🔗 {pull_request.url}",
-                f"⏲ {time_ago}",
-            ]
-            + ([f"💬 {comment}"] if comment else [])
-        )
-
-
-class PendingReviewFormatter:
-    """Format pull request to be shown in discord"""
-
-    def __call__(self, pull_requests: List[PullRequest]):
-        msg = "\n\n-----\n\n".join(map(PullRequestFormatter(), pull_requests))
-
-        title = f" **{pull_requests[0].repository.name}** ".center(40, "-")
-        return "\n".join(
-            [
-                "",
-                title,
-                "",
-                msg,
-            ]
-        )
