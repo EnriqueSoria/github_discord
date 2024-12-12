@@ -6,7 +6,6 @@ from discord.ext import commands
 from github_discord.cogs.utils import channel_is_allowed
 from github_discord.cogs.utils import parse_pull_request_url
 from github_discord.domain.githubb import PullRequestRepository
-from github_discord.domain.githubb import PendingReviewFormatter
 from github_discord.domain.githubb import RepositoriesRepository
 
 
@@ -21,29 +20,10 @@ class PullRequests(commands.Cog):
             return []
         return [repo for repo in self.repos.keys() if ctx.value.lower() in repo.lower()]
 
-    @discord.slash_command(name="pending_reviews")
-    @option("repo", description="Pick a repo!", autocomplete=get_repos)
-    async def pending_reviews(self, ctx, repo: str):
-        if not channel_is_allowed(ctx.channel.id):
-            await ctx.respond(
-                f"Command not allowed in this channel (`id={ctx.channel.id}`)"
-            )
-            return
-
-        try:
-            repository = self.repos[repo]
-        except KeyError:
-            await ctx.respond(f"❌ Repository '{repo}' not found")
-            return
-
-        await ctx.defer()
-        pull_requests = PullRequestRepository(repository).list()
-        await ctx.respond(PendingReviewFormatter()(pull_requests.items()))
-
     @discord.slash_command(name="pull_request", allowed_mentions=True)
     @option("url", description="Add a pull request URL")
     @option("comment", description="Add an additional comment")
-    async def pending_reviews(self, ctx, url: str, comment: str = ""):
+    async def pull_request(self, ctx, url: str, comment: str = ""):
         if not channel_is_allowed(ctx.channel.id):
             await ctx.respond(
                 f"Command not allowed in this channel (`id={ctx.channel.id}`)"
