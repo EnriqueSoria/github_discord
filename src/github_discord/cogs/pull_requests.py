@@ -42,6 +42,7 @@ class PullRequests(commands.Cog):
         pull_request = PullRequestRepository(repository).get(pr_number)
 
         embed = discord.Embed(
+            title=pull_request.title,
             description=(pull_request.description or "") + "\n\n",
             color=discord.Colour.blurple(),
             timestamp=pull_request.created_at,
