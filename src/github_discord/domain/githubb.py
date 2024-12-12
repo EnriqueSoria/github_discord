@@ -20,6 +20,7 @@ class Repository:
 @dataclass
 class PullRequest:
     repository: Repository
+    description: str
     number: int
     title: str
     labels: Set[str]
@@ -60,7 +61,7 @@ class PullRequestRepository:
         self.github = github.Github(GITHUB_TOKEN)
         self.repository = repository
 
-    def list(self) -> Dict[str, PullRequest]:
+    def list(self) -> Dict[int, PullRequest]:
         repository = self.github.get_repo(self.repository.name)
         pull_requests = repository.get_pulls(state="open")  # base=settings.BASE_BRANCH)
 
@@ -69,6 +70,7 @@ class PullRequestRepository:
                 repository=self.repository,
                 number=pull_request.number,
                 title=pull_request.title,
+                description=pull_request.body,
                 labels={label.name for label in pull_request.labels},
                 created_at=pull_request.created_at,
                 draft=pull_request.draft,
