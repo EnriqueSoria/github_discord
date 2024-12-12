@@ -5,7 +5,7 @@ This repo contains:
  - An installable cog, so you can include `/pull_request` command in your bot.
  - A simple Discord bot that already includes the `/pull_request` command.
 
-![imatge](https://github.com/user-attachments/assets/570a02b4-14ce-48f7-9b38-753b05eb80e6)
+![imatge](https://github.com/user-attachments/assets/ae0b4869-b959-460d-9956-71be63e2d419)
 
 
 ## How to run the bot
