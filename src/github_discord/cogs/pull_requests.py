@@ -41,15 +41,19 @@ class PullRequests(commands.Cog):
 
         pull_request = PullRequestRepository(repository).get(pr_number)
 
+        if pull_request.description:
+            title = (
+                (pull_request.description or "").splitlines()[0] + "\n\n"
+            ).removeprefix("# ")
+        else:
+            title = pull_request.title
         embed = discord.Embed(
-            title=pull_request.title,
-            description=(pull_request.description or "") + "\n\n",
+            title=title,
             color=discord.Colour.blurple(),
             timestamp=pull_request.created_at,
             url=pull_request.url,
         )
 
-        embed.add_field(name="🔗 URL", value=pull_request.url, inline=False)
         if pull_request.labels:
             embed.add_field(
                 name="🏷 Labels",
