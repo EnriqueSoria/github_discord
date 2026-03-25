@@ -2,17 +2,21 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
+import re
 import logging
 import os
 import discord
 
-from github_discord.cogs.pull_requests import PullRequests
+from github_discord.cogs.pull_requests import PullRequestsReplier, PullRequestsReplacer
+from github_discord.domain.githubb import PullRequestRepository
 from github_discord.domain.githubb import RepositoriesRepository
-
+from github_discord.cogs.utils import parse_pull_request_url
 
 logger = logging.getLogger(__name__)
-bot = discord.Bot()
+intents = discord.Intents.default()
+intents.messages = True
+intents.message_content = True
+bot = discord.Bot(intents=intents)
 
 
 @bot.event
@@ -25,7 +29,7 @@ async def on_application_command_error(
 
 
 def main():
-    bot.add_cog(PullRequests(bot))
+    bot.add_cog(PullRequestsReplacer(bot))
     bot.run(os.environ["DISCORD_TOKEN"])
 
 
