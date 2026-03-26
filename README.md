@@ -2,15 +2,18 @@
 A command for a discord bot to send private pull requests with a rich preview in Discord.
 
 This repo contains:
- - An installable cog, so you can include `/pull_request` command in your bot.
- - A simple Discord bot that already includes the `/pull_request` command.
+ - Multiple installable cogs for your Discord bot:
+    - `PullRequestsReplacer`: Automatically replaces GitHub PR URLs with a rich preview using a webhook (mimics the original user).
+    - `PullRequestsReplier`: Responds to GitHub PR URLs with a rich preview.
+    - `PullRequestsCommand`: Provides the `/pull_request` slash command.
+ - A simple Discord bot that already includes the `PullRequestsReplacer` cog.
 
-![imatge](https://github.com/user-attachments/assets/ae0b4869-b959-460d-9956-71be63e2d419)
+![img.png](img.png)
 
 
 ## How to run the bot
  - Populate .env: `cp .env.sample .env`
- - Fill the .env with as desired
+ - Fill the .env with as desired (requires `GITHUB_TOKEN` and either `ALLOWED_REPO_NAMES` or `ALLOWED_ORGANIZATIONS`)
  - Run bot: `make`
 
 ## How to install it on your bot
@@ -19,15 +22,23 @@ Install the library:
 pip install https://github.com/EnriqueSoria/github_discord.git
 ````
 
-Add the cog to your bot:
+Add a cog to your bot:
 ```python
-from github_discord.cogs.pull_requests import PullRequests
+from github_discord.cogs.pull_requests import PullRequestsReplacer
+from github_discord.github_service import GithubService
+
+github_service = GithubService(
+    github_token="YOUR_GITHUB_TOKEN",
+    allowed_repositories=["owner/repo1", "owner/repo2"],
+)
 
 bot = discord.Bot()
-bot.add_cog(PullRequests(bot))
+bot.add_cog(PullRequestsReplacer(bot, github_service))
 ```
 
 ## Use it (in discord)
-Talk to your bot or add it to a group and send this message:
-`/pending_reviews`
+If you are using `PullRequestsReplacer` or `PullRequestsReplier`, simply paste a GitHub Pull Request URL in a message.
+
+If you are using `PullRequestsCommand`:
+`/pull_request url:https://github.com/owner/repo/pull/123`
 

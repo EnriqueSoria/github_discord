@@ -1,21 +1,21 @@
+import logging
+import os
+
+import discord
 from dotenv import load_dotenv
+
+from github_discord.cogs.pull_requests import PullRequestsReplacer
+from github_discord.github_service import GithubService
+from utils import get_env_list
 
 load_dotenv()
 
-import re
-import logging
-import os
-import discord
-
-from github_discord.cogs.pull_requests import PullRequestsReplier, PullRequestsReplacer
-from github_discord.domain.githubb import PullRequestRepository
-from github_discord.domain.githubb import RepositoriesRepository
-from github_discord.cogs.utils import parse_pull_request_url
-
 logger = logging.getLogger(__name__)
+
 intents = discord.Intents.default()
 intents.messages = True
 intents.message_content = True
+
 bot = discord.Bot(intents=intents)
 
 
@@ -29,15 +29,20 @@ async def on_application_command_error(
 
 
 def main():
-    bot.add_cog(PullRequestsReplacer(bot))
+    github_service = GithubService(
+        github_token=os.environ["GITHUB_TOKEN"],
+        allowed_repositories=get_env_list("ALLOWED_REPO_NAMES", default=None),
+        allowed_organizations=get_env_list("ALLOWED_ORGANIZATIONS", default=None),
+    )
+
+    repos = github_service.list_repositories()
+    print(f"Configured for repos: {','.join(repos.keys())}")
+
+    print("Running bot...")
+    bot.add_cog(PullRequestsReplacer(bot, github_service))
     bot.run(os.environ["DISCORD_TOKEN"])
+    print("Bot closed")
 
 
 if __name__ == "__main__":
-    repos = RepositoriesRepository().list()
-    print(f"Configured for repos: {','.join(repos.keys())}")
-
-    # Discord
-    print("Running bot")
     main()
-    print("bot closed")

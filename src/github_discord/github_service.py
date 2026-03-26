@@ -1,0 +1,79 @@
+import datetime
+import functools
+from dataclasses import dataclass
+from typing import Set
+
+import github
+
+
+@dataclass(frozen=True)
+class Repository:
+    name: str
+
+
+@dataclass(frozen=True)
+class PullRequest:
+    repository: Repository
+    description: str
+    number: int
+    title: str
+    labels: Set[str]
+    created_at: datetime.datetime
+    draft: bool
+    url: str
+
+
+class GithubService:
+    def __init__(
+        self,
+        github_token: str,
+        allowed_repositories: list[str] | None = None,
+        allowed_organizations: list[str] | None = None,
+    ):
+        self.github = github.Github(github_token)
+        self.allowed_organizations = allowed_organizations
+        self.allowed_repositories = allowed_repositories
+
+        if self.allowed_organizations is None and self.allowed_repositories is None:
+            raise ValueError(
+                "You must specify at least one organization if allowing all repos"
+            )
+
+    @functools.lru_cache
+    def list_repositories(self) -> dict[str, Repository]:
+        if self.allowed_organizations:
+            repos = []
+            for organization in self.allowed_organizations:
+                repos.extend(self.github.get_organization(organization).get_repos())
+        else:
+            repos = [
+                self.github.get_repo(repo_name)
+                for repo_name in self.allowed_repositories
+            ]
+
+        return {repo.full_name: Repository(name=repo.full_name) for repo in repos}
+
+    def get_repository(self, full_name: str) -> Repository:
+        return self.list_repositories()[full_name]
+
+    @functools.lru_cache
+    def list_pull_requests(self, repository: Repository) -> dict[int, PullRequest]:
+        repository = self.github.get_repo(repository.name)
+        pull_requests = repository.get_pulls()
+
+        return {
+            pull_request.number: PullRequest(
+                repository=repository,
+                number=pull_request.number,
+                title=pull_request.title,
+                description=pull_request.body,
+                labels={label.name for label in pull_request.labels},
+                created_at=pull_request.created_at,
+                draft=pull_request.draft,
+                url=pull_request.html_url,
+            )
+            for pull_request in pull_requests
+        }
+
+    def get_pull_request(self, repository: Repository, number: int) -> PullRequest:
+        return self.list_pull_requests(repository)[number]
