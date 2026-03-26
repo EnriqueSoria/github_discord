@@ -23,6 +23,21 @@ class PullRequest:
     url: str
 
 
+def _build_pull_request_from_github_pull(
+    repository: Repository, pull: github.PullRequest
+) -> PullRequest:
+    return PullRequest(
+        repository=repository,
+        number=pull.number,
+        title=pull.title,
+        description=pull.body,
+        labels={label.name for label in pull.labels},
+        created_at=pull.created_at,
+        draft=pull.draft,
+        url=pull.html_url,
+    )
+
+
 class GithubService:
     def __init__(
         self,
@@ -56,24 +71,19 @@ class GithubService:
     def get_repository(self, full_name: str) -> Repository:
         return self.list_repositories()[full_name]
 
-    @functools.lru_cache
     def list_pull_requests(self, repository: Repository) -> dict[int, PullRequest]:
         repository = self.github.get_repo(repository.name)
         pull_requests = repository.get_pulls()
 
         return {
-            pull_request.number: PullRequest(
-                repository=repository,
-                number=pull_request.number,
-                title=pull_request.title,
-                description=pull_request.body,
-                labels={label.name for label in pull_request.labels},
-                created_at=pull_request.created_at,
-                draft=pull_request.draft,
-                url=pull_request.html_url,
+            pull_request.number: _build_pull_request_from_github_pull(
+                repository, pull_request
             )
             for pull_request in pull_requests
         }
 
     def get_pull_request(self, repository: Repository, number: int) -> PullRequest:
-        return self.list_pull_requests(repository)[number]
+        repository = self.github.get_repo(repository.name)
+        pull_request = repository.get_pull(number)
+
+        return _build_pull_request_from_github_pull(repository, pull_request)
