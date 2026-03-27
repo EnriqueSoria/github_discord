@@ -1,4 +1,3 @@
-import functools
 import re
 from typing import List
 
@@ -87,13 +86,19 @@ class PullRequestsReplacer(commands.Cog):
     ):
         self.bot = bot
         self.github_service = github_service
+        self._webhook_cache: dict[int, discord.Webhook] = {}
 
-    @functools.lru_cache
     async def get_webhook(self, channel: discord.TextChannel) -> discord.Webhook:
+        cached_webhook = self._webhook_cache.get(channel.id)
+        if cached_webhook is not None:
+            return cached_webhook
+
         webhooks = await channel.webhooks()
         webhook = discord.utils.get(webhooks, name="GithubBotReplacer")
         if webhook is None:
             webhook = await channel.create_webhook(name="GithubBotReplacer")
+
+        self._webhook_cache[channel.id] = webhook
         return webhook
 
     @commands.Cog.listener()
