@@ -23,7 +23,7 @@ If you are using `PullRequestsCommand`:
 `/pull_request https://github.com/owner/repo/pull/123`
 
 
-# Install one of the cogs in your Discord bot
+## Install one of the cogs in your Discord bot
 1. Install the library:
 ```shell
 pip install https://github.com/EnriqueSoria/github_discord.git
