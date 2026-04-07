@@ -60,11 +60,13 @@ class GithubService:
             repos = []
             for organization in self.allowed_organizations:
                 repos.extend(self.github.get_organization(organization).get_repos())
-        else:
+        elif self.allowed_repositories:
             repos = [
                 self.github.get_repo(repo_name)
                 for repo_name in self.allowed_repositories
             ]
+        else:
+            raise ValueError("This should never happen")
 
         return {repo.full_name: Repository(name=repo.full_name) for repo in repos}
 
