@@ -50,9 +50,7 @@ class GithubService:
         self.allowed_repositories = allowed_repositories
 
         if self.allowed_organizations is None and self.allowed_repositories is None:
-            raise ValueError(
-                "You must specify at least one organization if allowing all repos"
-            )
+            raise ValueError("You must specify at least one organization if allowing all repos")
 
     @functools.lru_cache
     def list_repositories(self) -> dict[str, Repository]:
@@ -61,10 +59,7 @@ class GithubService:
             for organization in self.allowed_organizations:
                 repos.extend(self.github.get_organization(organization).get_repos())
         elif self.allowed_repositories:
-            repos = [
-                self.github.get_repo(repo_name)
-                for repo_name in self.allowed_repositories
-            ]
+            repos = [self.github.get_repo(repo_name) for repo_name in self.allowed_repositories]
         else:
             raise ValueError("This should never happen")
 
@@ -78,9 +73,7 @@ class GithubService:
         pull_requests = repository.get_pulls()
 
         return {
-            pull_request.number: _build_pull_request_from_github_pull(
-                repository, pull_request
-            )
+            pull_request.number: _build_pull_request_from_github_pull(repository, pull_request)
             for pull_request in pull_requests
         }
 

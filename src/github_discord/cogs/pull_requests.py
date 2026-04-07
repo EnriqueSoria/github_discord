@@ -28,9 +28,7 @@ def find_pr_urls(text: str) -> list[dict[str, str]]:
 
 def get_embed_for_pull_request(pull_request: PullRequest) -> discord.Embed:
     if pull_request.description:
-        title = (
-            (pull_request.description or "").splitlines()[0] + "\n\n"
-        ).removeprefix("# ")
+        title = ((pull_request.description or "").splitlines()[0] + "\n\n").removeprefix("# ")
     else:
         title = pull_request.title
     embed = discord.Embed(
@@ -71,9 +69,7 @@ class PullRequestsReplier(commands.Cog):
             except KeyError:
                 return
 
-            pull_request = self.github_service.get_pull_request(
-                repository, int(pr_number)
-            )
+            pull_request = self.github_service.get_pull_request(repository, int(pr_number))
             embed = get_embed_for_pull_request(pull_request)
             await message.reply(embed=embed, mention_author=False)
 
@@ -122,9 +118,7 @@ class PullRequestsReplacer(commands.Cog):
             except KeyError:
                 continue
 
-            pull_request = self.github_service.get_pull_request(
-                repository, int(pr_number)
-            )
+            pull_request = self.github_service.get_pull_request(repository, int(pr_number))
             embeds.append(get_embed_for_pull_request(pull_request))
 
         if not embeds:
