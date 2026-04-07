@@ -16,29 +16,17 @@ This repo contains:
  - Fill the .env with as desired (requires `GITHUB_TOKEN` and either `ALLOWED_REPO_NAMES` or `ALLOWED_ORGANIZATIONS`)
  - Run bot: `make`
 
-## How to install it on your bot
-Install the library:
-````shell
-pip install https://github.com/EnriqueSoria/github_discord.git
-````
-
-Add a cog to your bot:
-```python
-from github_discord.cogs.pull_requests import PullRequestsReplacer
-from github_discord.github_service import GithubService
-
-github_service = GithubService(
-    github_token="YOUR_GITHUB_TOKEN",
-    allowed_repositories=["owner/repo1", "owner/repo2"],
-)
-
-bot = discord.Bot()
-bot.add_cog(PullRequestsReplacer(bot, github_service))
-```
-
 ## Use it (in discord)
 If you are using `PullRequestsReplacer` or `PullRequestsReplier`, simply paste a GitHub Pull Request URL in a message.
 
 If you are using `PullRequestsCommand`:
-`/pull_request url:https://github.com/owner/repo/pull/123`
+`/pull_request https://github.com/owner/repo/pull/123`
 
+
+# Install one of the cogs in your Discord bot
+1. Install the library:
+```shell
+pip install https://github.com/EnriqueSoria/github_discord.git
+```
+
+2. Instantiate the cog and add it to your bot. See [src/main.py](src/main.py) for an example.
