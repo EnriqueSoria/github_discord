@@ -8,7 +8,9 @@ This repo contains:
     - `PullRequestsCommand`: Provides the `/pull_request` slash command.
  - A simple Discord bot that already includes the `PullRequestsReplacer` cog.
 
-![img.png](img.png)
+An example of the rich preview when using `PullRequestsReplacer` (but the same embed is used in three cogs):
+
+![example.gif](example.gif)
 
 
 ## How to run the bot
